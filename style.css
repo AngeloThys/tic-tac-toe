@@ -81,6 +81,18 @@ body {
   grid-template-rows: repeat(3, 1fr);
 }
 
+.cell.y-2.x-0,
+.cell.y-1.x-0,
+.cell.y-0.x-0 {
+  border-right: 2px solid var(--primary-yellow);
+}
+
+.cell.y-2.x-1,
+.cell.y-1.x-1,
+.cell.y-0.x-1 {
+  border-left: 2px solid var(--primary-yellow);
+}
+
 .cell.y-2.x-1,
 .cell.y-1.x-1,
 .cell.y-0.x-1 {
@@ -93,40 +105,33 @@ body {
   border-left: 2px solid var(--primary-yellow);
 }
 
-.cell.y-2.x-2,
-.cell.y-1.x-2,
-.cell.y-0.x-2 {
-  border-right: 2px solid var(--primary-yellow);
-}
-
-.cell.y-2.x-3,
-.cell.y-1.x-3,
-.cell.y-0.x-3 {
-  border-left: 2px solid var(--primary-yellow);
-}
-
+.cell.y-2.x-0,
 .cell.y-2.x-1,
-.cell.y-2.x-2,
-.cell.y-2.x-3 {
-  border-bottom: 2px solid var(--primary-yellow);
-}
-
-.cell.y-1.x-1,
-.cell.y-1.x-2,
-.cell.y-1.x-3 {
+.cell.y-2.x-2 {
   border-top: 2px solid var(--primary-yellow);
 }
 
+.cell.y-1.x-0,
 .cell.y-1.x-1,
-.cell.y-1.x-2,
-.cell.y-1.x-3 {
+.cell.y-1.x-2 {
   border-bottom: 2px solid var(--primary-yellow);
 }
 
+.cell.y-1.x-0,
+.cell.y-1.x-1,
+.cell.y-1.x-2 {
+  border-top: 2px solid var(--primary-yellow);
+}
+
+.cell.y-0.x-0,
 .cell.y-0.x-1,
-.cell.y-0.x-2,
-.cell.y-0.x-3 {
-  border-top: 2px solid var(--primary-yellow);
+.cell.y-0.x-2 {
+  border-bottom: 2px solid var(--primary-yellow);
+}
+
+.cell {
+  display: grid;
+  place-items: center;
 }
 
 .new-game {
