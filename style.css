@@ -130,8 +130,22 @@ body {
 }
 
 .cell {
+  cursor: pointer;
   display: grid;
   place-items: center;
+}
+
+.close,
+.circle {
+  font-size: 136px;
+}
+
+.cell .close {
+  color: var(--primary-blue);
+}
+
+.cell .circle {
+  color: var(--primary-red);
 }
 
 .new-game {
