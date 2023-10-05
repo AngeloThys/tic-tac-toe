@@ -8,14 +8,15 @@ const cell = function () {
   return { setToken, getToken };
 };
 
-function player() {
+const player = function () {
   const username = "";
   const token = "";
   const setUsername = (newUsername) => (username = newUsername);
   const getUserName = () => username;
   const setToken = (newToken) => (token = newToken);
+  const getToken = () => token;
 
-  return { setUsername, getUserName, setToken };
+  return { setUsername, getUserName, setToken, getToken };
 }
 
 const gameboard = (function () {
@@ -48,11 +49,11 @@ const gameboard = (function () {
     }
   };
 
-  const setCell = function (e) {
+  const setCell = function (player, e) {
     const row = e.target.dataset.row;
     const column = e.target.dataset.column;
 
-    gameboard[row][column].setToken();
+    gameboard[row][column].setToken(player.getToken());
   };
 
   return { display, setCell };
@@ -60,7 +61,9 @@ const gameboard = (function () {
 
 const game = (function () {
   const gameDiv = document.querySelector(".game");
-  gameDiv.addEventListener("click", gameboard.setCell);
+  gameDiv.addEventListener("click", (e) => {
+    gameboard.setCell("player-1", e); // Modify player-1 to hold the current player
+  });
 
   gameboard.display();
 })();

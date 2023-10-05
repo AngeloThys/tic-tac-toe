@@ -30,6 +30,94 @@ body {
   background-color: var(--primary-black);
 }
 
+dialog {
+  display: block; /* remove this */
+  background-color: var(--tertiary-black);
+  border: 2px solid var(--primary-yellow);
+  color: #fff;
+  border-radius: 2px;
+  box-shadow: 0px 0px 8px var(--secondary-yellow);
+  display: grid;
+  grid-template-rows: 1fr 2fr 1fr;
+  gap: 24px;
+  padding: 0 1em 1em 1em;
+}
+
+dialog > h1 {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-size: 2.3rem;
+  text-shadow: 0px 0px 8px var(--secondary-black);
+  border-bottom: dashed 4px var(--primary-yellow);
+  display: grid;
+  place-items: center;
+}
+
+dialog > form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+dialog > form > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+dialog > form > div > label {
+  display: grid;
+  place-self: center;
+}
+
+dialog > form > div > label > .material-symbols-outlined {
+  font-size: 64px;
+}
+
+dialog > form > div > input {
+  height: 100%;
+  border: 0;
+  border-radius: 2px;
+  transition: all 0.2s ease-in-out;
+  font-size: 2rem;
+  width: 262px;
+}
+
+dialog > form > div > input:focus-visible {
+  outline: 2px solid var(--tertiary-yellow);
+}
+
+.player-1 {
+  color: var(--primary-blue);
+}
+
+.player-2 {
+  color: var(--primary-red);
+}
+
+dialog > button {
+  border: 0;
+  border-radius: 2px;
+  background-color: var(--primary-yellow);
+  color: #fff;
+  font-size: 2.3rem;
+  box-shadow: 0px 4px 0px var(--secondary-yellow);
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+dialog > button:hover {
+  box-shadow: 0px 3px 0px var(--secondary-yellow);
+  transform: translateY(1px);
+}
+
+dialog > button:active {
+  box-shadow: 0px 0px 0px var(--secondary-yellow);
+  transform: translateY(4px);
+}
+
 .game-container {
   height: 650px;
   width: 600px;
