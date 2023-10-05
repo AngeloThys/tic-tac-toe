@@ -8,8 +8,14 @@ const cell = function () {
   return { setToken, getToken };
 };
 
-function player(name, symbol) {
-  return { name, symbol };
+function player() {
+  const username = "";
+  const token = "";
+  const setUsername = (newUsername) => (username = newUsername);
+  const getUserName = () => username;
+  const setToken = (newToken) => (token = newToken);
+
+  return { setUsername, getUserName, setToken };
 }
 
 const gameboard = (function () {
@@ -42,19 +48,19 @@ const gameboard = (function () {
     }
   };
 
-  const setGameboardCell = function (e) {
+  const setCell = function (e) {
     const row = e.target.dataset.row;
     const column = e.target.dataset.column;
 
     gameboard[row][column].setToken();
   };
 
-  return { display, setGameboardCell };
+  return { display, setCell };
 })();
 
 const game = (function () {
   const gameDiv = document.querySelector(".game");
-  gameDiv.addEventListener("click", gameboard.setGameboardCell);
+  gameDiv.addEventListener("click", gameboard.setCell);
 
   gameboard.display();
 })();
