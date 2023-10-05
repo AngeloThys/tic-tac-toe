@@ -1,16 +1,16 @@
 "use strict";
 
-const game = (function () {
-  return {};
-})();
-
 const cell = function () {
   let token = "";
-  const setToken = (newToken) => token = newToken;
+  const setToken = (newToken) => (token = newToken);
   const getToken = () => token;
 
   return { setToken, getToken };
 };
+
+function player(name, symbol) {
+  return { name, symbol };
+}
 
 const gameboard = (function () {
   const rows = 3;
@@ -42,11 +42,19 @@ const gameboard = (function () {
     }
   };
 
-  return { display };
+  const setGameboardCell = function (e) {
+    const row = e.target.dataset.row;
+    const column = e.target.dataset.column;
+
+    gameboard[row][column].setToken();
+  };
+
+  return { display, setGameboardCell };
 })();
 
-function player(name, symbol) {
-  return { name, symbol };
-}
+const game = (function () {
+  const gameDiv = document.querySelector(".game");
+  gameDiv.addEventListener("click", gameboard.setGameboardCell);
 
-gameboard.display();
+  gameboard.display();
+})();
