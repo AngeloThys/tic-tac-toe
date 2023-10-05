@@ -17,7 +17,7 @@ const player = function () {
   const getToken = () => token;
 
   return { setUsername, getUserName, setToken, getToken };
-}
+};
 
 const gameboard = (function () {
   const rows = 3;
@@ -60,6 +60,16 @@ const gameboard = (function () {
 })();
 
 const game = (function () {
+  const newGameButton = document.querySelector(".new-game");
+  const dialog = document.querySelector("dialog");
+  newGameButton.addEventListener("click", () => dialog.showModal());
+  // Allows for the dialog to be closed by clicking outside of it.
+  dialog.addEventListener("click", (e) => {
+    if (e.target === dialog) {
+      dialog.close();
+    }
+  });
+
   const gameDiv = document.querySelector(".game");
   gameDiv.addEventListener("click", (e) => {
     gameboard.setCell("player-1", e); // Modify player-1 to hold the current player
