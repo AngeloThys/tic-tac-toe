@@ -4,17 +4,31 @@ const game = (function () {
   return {};
 })();
 
+const cell = function () {
+  let token = "";
+  const setToken = (newToken) => token = newToken;
+  const getToken = () => token;
+
+  return { setToken, getToken };
+};
+
 const gameboard = (function () {
-  const gameboard = [
-    ["x", "x", "o"],
-    ["o", "o", "x"],
-    ["x", "o", "x"],
-  ];
+  const rows = 3;
+  const columns = 3;
+  const gameboard = [];
+
+  for (let i = 0; i < rows; i++) {
+    gameboard.push([]);
+    for (let j = 0; j < columns; j++) {
+      gameboard[i].push(cell());
+    }
+  }
+
   const display = function () {
-    for (let i = 0; i < this.gameboard.length; i++) {
-      for (let j = 0; j < this.gameboard[i].length; j++) {
+    for (let i = 0; i < gameboard.length; i++) {
+      for (let j = 0; j < gameboard[i].length; j++) {
         const cell = document.querySelector(`.y-${i}.x-${j}`);
-        switch (this.gameboard[i][j]) {
+        switch (gameboard[i][j].getToken()) {
           case "x":
             cell.innerHTML =
               "<span class='close material-symbols-outlined'>close</span>";
@@ -27,10 +41,8 @@ const gameboard = (function () {
       }
     }
   };
-  return {
-    gameboard: gameboard,
-    display: display,
-  };
+
+  return { display };
 })();
 
 function player(name, symbol) {
