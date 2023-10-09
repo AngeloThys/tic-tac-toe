@@ -45,6 +45,9 @@ const gameboard = (function () {
             cell.innerHTML =
               "<span class='circle material-symbols-outlined'>circle</span>";
             break;
+          case "":
+            cell.innerHTML = "";
+            break;
         }
       }
     }
@@ -108,8 +111,16 @@ const gameboard = (function () {
   };
 
   const checkFull = function () {};
+  // clears every cell individually
+  const clear = function () {
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < columns; j++) {
+        gameboard[i][j].setToken("");
+      }
+    }
+  };
 
-  return { display, setCell, checkThree, checkFull };
+  return { display, setCell, checkThree, checkFull, clear };
 })();
 
 const game = (function () {
@@ -144,7 +155,7 @@ const game = (function () {
     const playerTwoScore = document.querySelector(".player-2-score");
     playerOneScore.textContent = playerOne.getScore();
     playerTwoScore.textContent = playerTwo.getScore();
-    
+
     const gameDiv = document.querySelector(".game");
     gameDiv.addEventListener("click", (e) => {
       // we check if the cell is valid
@@ -187,7 +198,8 @@ const game = (function () {
 
         const playAgainButton = document.querySelector(".play-again .play");
         playAgainButton.addEventListener("click", () => {
-          // clear gameboard
+          gameboard.clear();
+          gameboard.display();
           dialog.close();
           let player = playerOne;
           playGame(player);
