@@ -30,7 +30,7 @@ body {
   background-color: var(--primary-black);
 }
 
-dialog {
+.play-game {
   padding: 0;
   background-color: var(--tertiary-black);
   border: 2px solid var(--primary-yellow);
@@ -39,7 +39,7 @@ dialog {
   box-shadow: 0px 0px 8px var(--secondary-yellow);
 }
 
-dialog::backdrop {
+.play-game::backdrop {
   background: rgba(38, 43, 41, 0.75);
 }
 
@@ -104,7 +104,7 @@ dialog::backdrop {
   color: var(--primary-red);
 }
 
-.dialog-container > button {
+.play {
   border: 0;
   border-radius: 2px;
   background-color: var(--primary-yellow);
@@ -115,14 +115,67 @@ dialog::backdrop {
   cursor: pointer;
 }
 
-.dialog-container > button:hover {
+.play:hover {
   box-shadow: 0px 3px 0px var(--secondary-yellow);
   transform: translateY(1px);
 }
 
-.dialog-container > button:active {
+.play:active {
   box-shadow: 0px 0px 0px var(--secondary-yellow);
   transform: translateY(4px);
+}
+
+.new-cell {
+  padding: 0;
+  background-color: var(--tertiary-black);
+  border: 2px solid var(--primary-yellow);
+  color: #fff;
+  border-radius: 2px;
+  box-shadow: 0px 0px 8px var(--secondary-yellow);
+  transition: opacity 1.5s ease-out 0.5s;
+}
+
+.new-cell::backdrop {
+  opacity: 0;
+}
+
+.new-cell > h1 {
+  margin: 12px;
+}
+
+.play-again {
+  padding: 0;
+  background-color: var(--tertiary-black);
+  border: 2px solid var(--primary-yellow);
+  color: #fff;
+  border-radius: 2px;
+  box-shadow: 0px 0px 8px var(--secondary-yellow);
+}
+
+.dialog-container-2 {
+  display: grid;
+  gap: 24px;
+  margin: 24px;
+}
+
+.winner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.winner-container > h2,
+.winner-container > h1 {
+  margin: 0;
+}
+
+.winner-container > h2 {
+  font-size: 2.5rem;
+}
+
+.winner-container > h1 {
+  font-size: 3rem;
 }
 
 .game-container {

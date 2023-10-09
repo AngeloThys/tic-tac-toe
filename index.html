@@ -18,7 +18,7 @@
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <dialog>
+    <dialog class="play-game">
       <div class="dialog-container">
         <h1>Enter username</h1>
         <form action="">
@@ -36,6 +36,18 @@
           </div>
         </form>
         <button class="play">PLAY</button>
+      </div>
+    </dialog>
+    <dialog class="new-cell">
+      <h1>Please select a valid cell</h1>
+    </dialog>
+    <dialog class="play-again">
+      <div class="dialog-container-2">
+        <div class="winner-container">
+          <h2>The winner is</h2>
+          <h1 class="winner"></h1>
+        </div>
+        <button class="play">PLAY AGAIN</button>
       </div>
     </dialog>
     <div class="game-container">
