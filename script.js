@@ -9,12 +9,15 @@ const cell = function () {
 };
 
 const player = function (username, token) {
+  let score = 0;
   const setUsername = (newUsername) => (username = newUsername);
   const getUserName = () => username;
   const setToken = (newToken) => (token = newToken);
   const getToken = () => token;
+  const addWin = () => score++;
+  const getScore = () => score;
 
-  return { setUsername, getUserName, setToken, getToken };
+  return { setUsername, getUserName, setToken, getToken, addWin, getScore };
 };
 
 const gameboard = (function () {
@@ -136,6 +139,12 @@ const game = (function () {
 
   const playGame = function (player) {
     let winner = "";
+
+    const playerOneScore = document.querySelector(".player-1-score");
+    const playerTwoScore = document.querySelector(".player-2-score");
+    playerOneScore.textContent = playerOne.getScore();
+    playerTwoScore.textContent = playerTwo.getScore();
+    
     const gameDiv = document.querySelector(".game");
     gameDiv.addEventListener("click", (e) => {
       // we check if the cell is valid
@@ -162,10 +171,12 @@ const game = (function () {
         const winnerH1 = document.querySelector(".winner");
         switch (winnerToken) {
           case "x":
+            playerOne.addWin();
             winner = playerOne.getUserName();
             winnerH1.style.color = "var(--primary-blue)";
             break;
           case "o":
+            playerTwo.addWin();
             winner = playerTwo.getUserName();
             winnerH1.style.color = "var(--primary-red)";
             break;
@@ -176,7 +187,6 @@ const game = (function () {
 
         const playAgainButton = document.querySelector(".play-again .play");
         playAgainButton.addEventListener("click", () => {
-          // add score to winner
           // clear gameboard
           dialog.close();
           let player = playerOne;
