@@ -14,7 +14,7 @@ const player = function (username, token) {
   const getUserName = () => username;
   const setToken = (newToken) => (token = newToken);
   const getToken = () => token;
-  const addWin = () => score++;
+  const addWin = () => (score = score + 1);
   const getScore = () => score;
 
   return { setUsername, getUserName, setToken, getToken, addWin, getScore };
@@ -64,7 +64,7 @@ const gameboard = (function () {
     let cellTwo = "";
     let cellThree = "";
     // check each row
-    for (let row = 0; row < gameboard.length; row++) {
+    for (let row = 0; row < 3; row++) {
       cellOne = gameboard[row][0];
       cellTwo = gameboard[row][1];
       cellThree = gameboard[row][2];
@@ -76,17 +76,15 @@ const gameboard = (function () {
       }
     }
     // check each column
-    for (let row = 0; row < gameboard.length; row++) {
-      for (let column = 0; column < gameboard[row]; column++) {
-        cellOne = gameboard[0][column];
-        cellOne = gameboard[1][column];
-        cellOne = gameboard[2][column];
-        if (
-          cellOne.getToken() === cellTwo.getToken() &&
-          cellOne.getToken() === cellThree.getToken()
-        ) {
-          return cellOne.getToken();
-        }
+    for (let column = 0; column < 3; column++) {
+      cellOne = gameboard[0][column];
+      cellTwo = gameboard[1][column];
+      cellThree = gameboard[2][column];
+      if (
+        cellOne.getToken() === cellTwo.getToken() &&
+        cellOne.getToken() === cellThree.getToken()
+      ) {
+        return cellOne.getToken();
       }
     }
     // check both diagonals
