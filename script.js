@@ -14,11 +14,23 @@ const player = function (username, token) {
   const getUserName = () => username;
   const setToken = (newToken) => (token = newToken);
   const getToken = () => token;
-  const addWin = () => (score = score + 1);
+  const addWin = () => score++;
   const getScore = () => score;
 
   return { setUsername, getUserName, setToken, getToken, addWin, getScore };
 };
+
+const scoreboard = (function () {
+  const playerOneScore = document.querySelector(".player-1-score");
+  const playerTwoScore = document.querySelector(".player-2-score");
+
+  const setScore = function (playerOne, playerTwo) {
+    playerOneScore.textContent = playerOne.getScore();
+    playerTwoScore.textContent = playerTwo.getScore();
+  };
+
+  return { setScore };
+})();
 
 const gameboard = (function () {
   const rows = 3;
@@ -70,8 +82,10 @@ const gameboard = (function () {
       cellThree = gameboard[row][2];
       if (
         cellOne.getToken() === cellTwo.getToken() &&
-        cellOne.getToken() === cellThree.getToken()
+        cellOne.getToken() === cellThree.getToken() &&
+        (cellOne.getToken() === "x" || cellOne.getToken() === "o")
       ) {
+        console.log("row", row);
         return cellOne.getToken();
       }
     }
@@ -82,8 +96,10 @@ const gameboard = (function () {
       cellThree = gameboard[2][column];
       if (
         cellOne.getToken() === cellTwo.getToken() &&
-        cellOne.getToken() === cellThree.getToken()
+        cellOne.getToken() === cellThree.getToken() &&
+        (cellOne.getToken() === "x" || cellOne.getToken() === "o")
       ) {
+        console.log("column", column);
         return cellOne.getToken();
       }
     }
@@ -93,8 +109,10 @@ const gameboard = (function () {
     cellThree = gameboard[2][2];
     if (
       cellOne.getToken() === cellTwo.getToken() &&
-      cellOne.getToken() === cellThree.getToken()
+      cellOne.getToken() === cellThree.getToken() &&
+      (cellOne.getToken() === "x" || cellOne.getToken() === "o")
     ) {
+      console.log("diagonal1");
       return cellOne.getToken();
     }
     cellOne = gameboard[0][2];
@@ -102,8 +120,10 @@ const gameboard = (function () {
     cellThree = gameboard[2][0];
     if (
       cellOne.getToken() === cellTwo.getToken() &&
-      cellOne.getToken() === cellThree.getToken()
+      cellOne.getToken() === cellThree.getToken() &&
+      (cellOne.getToken() === "x" || cellOne.getToken() === "o")
     ) {
+      console.log("diagonal2");
       return cellOne.getToken();
     }
   };
@@ -149,13 +169,11 @@ const game = (function () {
   const playGame = function (player) {
     let winner = "";
 
-    const playerOneScore = document.querySelector(".player-1-score");
-    const playerTwoScore = document.querySelector(".player-2-score");
-    playerOneScore.textContent = playerOne.getScore();
-    playerTwoScore.textContent = playerTwo.getScore();
+    scoreboard.setScore(playerOne, playerTwo);
+    gameboard.clear();
+    gameboard.display();
 
-    const gameDiv = document.querySelector(".game");
-    gameDiv.addEventListener("click", (e) => {
+    const placeToken = function (e) {
       // we check if the cell is valid
       if (e.target.classList[0] === "cell") {
         // Changes the player each turn on correct cell click
@@ -180,12 +198,14 @@ const game = (function () {
         const winnerH1 = document.querySelector(".winner");
         switch (winnerToken) {
           case "x":
-            playerOne.addWin();
+            console.trace(playerOne.addWin());
+            // playerOne.addWin();
             winner = playerOne.getUserName();
             winnerH1.style.color = "var(--primary-blue)";
             break;
           case "o":
-            playerTwo.addWin();
+            console.trace(playerTwo.addWin());
+            // playerTwo.addWin();
             winner = playerTwo.getUserName();
             winnerH1.style.color = "var(--primary-red)";
             break;
@@ -200,12 +220,16 @@ const game = (function () {
           gameboard.display();
           dialog.close();
           let player = playerOne;
+          gameDiv.removeEventListener("click", placeToken);
           playGame(player);
         });
       }
       // checks if the board is full: tie.
       gameboard.checkFull();
-    });
+    };
+
+    const gameDiv = document.querySelector(".game");
+    gameDiv.addEventListener("click", placeToken);
   };
 
   const playButton = document.querySelector(".play-game .play");
