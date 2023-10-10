@@ -128,7 +128,19 @@ const gameboard = (function () {
     }
   };
 
-  const checkFull = function () {};
+  const isFull = function () {
+    for (let row = 0; row < 3; row++) {
+      for (let column = 0; column < 3; column++) {
+        if (
+          gameboard[row][column].getToken() !== "o" ||
+          gameboard[row][column].getToken() !== "x"
+        ) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
   // clears every cell individually
   const clear = function () {
     for (let i = 0; i < rows; i++) {
@@ -138,7 +150,7 @@ const gameboard = (function () {
     }
   };
 
-  return { display, setCell, checkThree, checkFull, clear };
+  return { display, setCell, checkThree, isFull, clear };
 })();
 
 const game = (function () {
@@ -198,14 +210,12 @@ const game = (function () {
         const winnerH1 = document.querySelector(".winner");
         switch (winnerToken) {
           case "x":
-            console.trace(playerOne.addWin());
-            // playerOne.addWin();
+            playerOne.addWin();
             winner = playerOne.getUserName();
             winnerH1.style.color = "var(--primary-blue)";
             break;
           case "o":
-            console.trace(playerTwo.addWin());
-            // playerTwo.addWin();
+            playerTwo.addWin();
             winner = playerTwo.getUserName();
             winnerH1.style.color = "var(--primary-red)";
             break;
@@ -214,18 +224,21 @@ const game = (function () {
         const dialog = document.querySelector(".play-again");
         dialog.showModal();
 
-        const playAgainButton = document.querySelector(".play-again .play");
-        playAgainButton.addEventListener("click", () => {
+        const playAgain = function () {
           gameboard.clear();
           gameboard.display();
           dialog.close();
           let player = playerOne;
           gameDiv.removeEventListener("click", placeToken);
           playGame(player);
-        });
+        };
+
+        const playAgainButton = document.querySelector(".play-again .play");
+        const options = { once: true };
+        playAgainButton.addEventListener("click", playAgain, options);
       }
       // checks if the board is full: tie.
-      gameboard.checkFull();
+      gameboard.isFull(); // this will return true if full and false if not.
     };
 
     const gameDiv = document.querySelector(".game");
