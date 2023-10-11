@@ -154,17 +154,7 @@ const gameboard = (function () {
 })();
 
 const game = (function () {
-  let playerOne, playerTwo;
-
-  const newGameButton = document.querySelector(".new-game");
-  const dialog = document.querySelector("dialog");
-  newGameButton.addEventListener("click", () => dialog.showModal());
-  // Allows for the dialog to be closed by clicking outside of it.
-  dialog.addEventListener("click", (e) => {
-    if (e.target === dialog) {
-      dialog.close();
-    }
-  });
+  let playerOne, playerTwo, currentPlayer, winner;
 
   const getPlayerNames = function () {
     const playerNameOne = document.querySelector("#username-1").value;
@@ -178,80 +168,109 @@ const game = (function () {
     playerTwo = player(playerNameTwo, "o");
   };
 
-  const playGame = function (player) {
-    let winner = "";
+  const checkPlayerChoice = function (e) {
+    // we check if the cell is valid
+    if (e.target.classList[0] === "cell") {
+      // Changes the player each turn on correct cell click
+      currentPlayer = currentPlayer === playerTwo ? playerOne : playerTwo;
+      gameboard.setCell(currentPlayer, e);
+      gameboard.display();
+    } else if (
+      e.target.classList[0] === "circle" ||
+      e.target.classList[0] === "close"
+    ) {
+      const dialog = document.querySelector(".new-cell");
+      dialog.showModal();
+      dialog.style.opacity = 0;
+      dialog.addEventListener("transitionend", () => {
+        dialog.close();
+        dialog.style.opacity = 1;
+      });
+    }
+  };
 
+  const checkWinCondition = function () {
+    // checks if there is a three in a row: token type wins.
+    const winnerToken = gameboard.checkThree();
+    if (winnerToken) {
+      const winnerH1 = document.querySelector(".winner");
+      switch (winnerToken) {
+        case "x":
+          playerOne.addWin();
+          winner = playerOne.getUserName();
+          winnerH1.style.color = "var(--primary-blue)";
+          break;
+        case "o":
+          playerTwo.addWin();
+          winner = playerTwo.getUserName();
+          winnerH1.style.color = "var(--primary-red)";
+          break;
+      }
+      winnerH1.textContent = winner;
+      const dialog = document.querySelector(".play-again");
+      dialog.showModal();
+    }
+    // checks if the board is full: tie.
+    gameboard.isFull(); // this will return true if full and false if not.
+  };
+
+  const playRound = function () {
     scoreboard.setScore(playerOne, playerTwo);
     gameboard.clear();
     gameboard.display();
 
-    const placeToken = function (e) {
-      // we check if the cell is valid
-      if (e.target.classList[0] === "cell") {
-        // Changes the player each turn on correct cell click
-        player = player === playerTwo ? playerOne : playerTwo;
-        gameboard.setCell(player, e);
-        gameboard.display();
-      } else if (
-        e.target.classList[0] === "circle" ||
-        e.target.classList[0] === "close"
-      ) {
-        const dialog = document.querySelector(".new-cell");
-        dialog.showModal();
-        dialog.style.opacity = 0;
-        dialog.addEventListener("transitionend", () => {
-          dialog.close();
-          dialog.style.opacity = 1;
-        });
-      }
-      // checks if there is a three in a row: token type wins.
-      const winnerToken = gameboard.checkThree();
-      if (winnerToken) {
-        const winnerH1 = document.querySelector(".winner");
-        switch (winnerToken) {
-          case "x":
-            playerOne.addWin();
-            winner = playerOne.getUserName();
-            winnerH1.style.color = "var(--primary-blue)";
-            break;
-          case "o":
-            playerTwo.addWin();
-            winner = playerTwo.getUserName();
-            winnerH1.style.color = "var(--primary-red)";
-            break;
-        }
-        winnerH1.textContent = winner;
-        const dialog = document.querySelector(".play-again");
-        dialog.showModal();
-
-        const playAgain = function () {
-          gameboard.clear();
-          gameboard.display();
-          dialog.close();
-          let player = playerOne;
-          gameDiv.removeEventListener("click", placeToken);
-          playGame(player);
-        };
-
-        const playAgainButton = document.querySelector(".play-again .play");
-        const options = { once: true };
-        playAgainButton.addEventListener("click", playAgain, options);
-      }
-      // checks if the board is full: tie.
-      gameboard.isFull(); // this will return true if full and false if not.
-    };
-
     const gameDiv = document.querySelector(".game");
-    gameDiv.addEventListener("click", placeToken);
+    gameDiv.classList.add("enabled");
+  };
+  // Allows for consecutive rounds with same players
+  const playAgain = function () {
+    const dialog = document.querySelector(".play-again");
+    gameboard.clear();
+    gameboard.display();
+    dialog.close();
+    let player = playerOne;
+    const gameDiv = document.querySelector(".game");
+    gameDiv.classList.remove("enabled");
+    playRound(player);
   };
 
+  const isEnabled = function () {
+    const gameDiv = document.querySelector(".game");
+    return gameDiv.classList.contains("enabled");
+  };
+
+  const choice = function (e) {
+    if (isEnabled()) {
+      checkPlayerChoice(e);
+      checkWinCondition();
+    }
+  };
+  // processes the clicks on the gameboard
+  const gameDiv = document.querySelector(".game");
+  gameDiv.addEventListener("click", (e) => {
+    choice(e);
+  });
+  // button that opens the name form modal
+  const newGameButton = document.querySelector(".new-game");
+  const dialog = document.querySelector("dialog");
+  newGameButton.addEventListener("click", () => dialog.showModal());
+  // Allows for the dialog to be closed by clicking outside of it.
+  dialog.addEventListener("click", (e) => {
+    if (e.target === dialog) {
+      dialog.close();
+    }
+  });
+  // button that creates the players and starts the first round
   const playButton = document.querySelector(".play-game .play");
   playButton.addEventListener("click", () => {
     createPlayers(...getPlayerNames());
     dialog.close();
-    let player = playerTwo;
-    playGame(player);
+    currentPlayer = playerTwo;
+    playRound();
   });
+  // button that starts another round with the same players
+  const playAgainButton = document.querySelector(".play-again .play");
+  playAgainButton.addEventListener("click", playAgain);
 
   return {};
 })();
