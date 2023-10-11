@@ -132,7 +132,7 @@ const gameboard = (function () {
     for (let row = 0; row < 3; row++) {
       for (let column = 0; column < 3; column++) {
         if (
-          gameboard[row][column].getToken() !== "o" ||
+          gameboard[row][column].getToken() !== "o" &&
           gameboard[row][column].getToken() !== "x"
         ) {
           return false;
@@ -190,10 +190,12 @@ const game = (function () {
   };
 
   const checkWinCondition = function () {
+    const preWinnerH2 = document.querySelector(".pre-winner");
+    const winnerH1 = document.querySelector(".winner");
+    const dialog = document.querySelector(".play-again");
     // checks if there is a three in a row: token type wins.
     const winnerToken = gameboard.checkThree();
     if (winnerToken) {
-      const winnerH1 = document.querySelector(".winner");
       switch (winnerToken) {
         case "x":
           playerOne.addWin();
@@ -206,12 +208,17 @@ const game = (function () {
           winnerH1.style.color = "var(--primary-red)";
           break;
       }
+      preWinnerH2.textContent = "The winner is";
       winnerH1.textContent = winner;
-      const dialog = document.querySelector(".play-again");
       dialog.showModal();
     }
     // checks if the board is full: tie.
-    gameboard.isFull(); // this will return true if full and false if not.
+    if (gameboard.isFull()) {
+      preWinnerH2.textContent = "The game is a";
+      winnerH1.style.color = "var(--primary-yellow)";
+      winnerH1.textContent = "TIE";
+      dialog.showModal();
+    }
   };
 
   const playRound = function () {
